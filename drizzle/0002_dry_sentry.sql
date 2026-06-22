@@ -1,0 +1,1 @@
+CREATE INDEX "idx_products_updated_id" ON "products" USING btree ("updated_at","id");

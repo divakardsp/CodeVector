@@ -15,6 +15,13 @@
       "when": 1782156563536,
       "tag": "0001_overconfident_master_mold",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1782171348429,
+      "tag": "0002_dry_sentry",
+      "breakpoints": true
     }
   ]
 }
