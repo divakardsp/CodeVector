@@ -8,6 +8,13 @@
       "when": 1782152045117,
       "tag": "0000_illegal_hellfire_club",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782156563536,
+      "tag": "0001_overconfident_master_mold",
+      "breakpoints": true
     }
   ]
 }

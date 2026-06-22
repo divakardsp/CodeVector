@@ -1,0 +1,1 @@
+ALTER TABLE "products" ALTER COLUMN "updated_at" SET NOT NULL;

@@ -18,5 +18,5 @@ export const productTable = pgTable("products", {
     category: categoryEnum("category").default("Other").notNull(),
     price: integer("price").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
+    updatedAt: timestamp("updated_at").$onUpdate(() => new Date()).notNull()
 });
