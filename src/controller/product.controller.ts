@@ -57,10 +57,9 @@ export const getProductsCursorPagination = async (
 ) => {
     try {
 
-        const cursor = req.body?.cursor || {};
+        const {cursorCreatedAt = null, cursorId = null} = req.query;
         const { limit = 20, category = null } = req.query;
 
-        const keysLengthOfCursor = Object.keys(cursor).length;
 
         const conditions = [];
 
@@ -68,17 +67,18 @@ export const getProductsCursorPagination = async (
             conditions.push(eq(productTable.category, category as (typeof productTable.category.enumValues)[number]));
         }
 
-        if (keysLengthOfCursor !== 0) {
-            const cursorCreatedAtDate = new Date(cursor.createdAt);
+        if (cursorCreatedAt && cursorId) {
+            
+            const cursorCreatedAtDate = new Date(cursorCreatedAt as string);
             conditions.push(
                 or(
                     lt(productTable.createdAt, cursorCreatedAtDate),
                     and(
                         eq(productTable.createdAt, cursorCreatedAtDate),
-                        lt(productTable.id, cursor.id),
+                        lt(productTable.id, Number(cursorId)),
                     ),
                 ),
-            );
+            ); 
         }
 
         const products = await db
@@ -89,9 +89,9 @@ export const getProductsCursorPagination = async (
             .limit(Number(limit));
 
         const lastProduct = Number(limit) - 1;
-        const cursorCreatedAt = products[lastProduct].createdAt;
-        const cursorId = products[lastProduct].id;
-        const nextCursor = { createdAt: cursorCreatedAt, id: cursorId };
+        const nextCursorCreatedAt = products[lastProduct].createdAt;
+        const nextCursorId = products[lastProduct].id;
+        const nextCursor = { createdAt: nextCursorCreatedAt, id: nextCursorId };
 
         return res.json({
             statusCode: 201,
@@ -136,6 +136,7 @@ export const gerProductsOffsetpagination = async (req: Request, res: Response) =
             data: {products},
             success: true,
             previousPage: Number(page)-1 === 0 ? null : Number(page)-1,
+            currentPage: Number(page),
             nextPage: Number(page) + 1,
         })
     
