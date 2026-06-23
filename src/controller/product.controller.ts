@@ -21,7 +21,7 @@ export const updateProductPrice = async (req: Request, res: Response) => {
             .from(productTable)
             .where(eq(productTable.id, Number(id)));
 
-        if (!product) {
+        if (product.length === 0) {
             return res.json({
                 statusCode: 404,
                 message: "Product with this id does not exist",
@@ -65,7 +65,7 @@ export const getProductsCursorPagination = async (
         const conditions = [];
 
         if (category) {
-            conditions.push(eq(productTable.category, category));
+            conditions.push(eq(productTable.category, category as (typeof productTable.category.enumValues)[number]));
         }
 
         if (keysLengthOfCursor !== 0) {
@@ -115,7 +115,7 @@ export const gerProductsOffsetpagination = async (req: Request, res: Response) =
         const conditions = [];
     
         if(category){
-            conditions.push(eq(productTable.category, category))
+            conditions.push(eq(productTable.category, category as (typeof productTable.category.enumValues)[number]))
         }
     
         const offset = (Number(page)-1) * Number(limit)
