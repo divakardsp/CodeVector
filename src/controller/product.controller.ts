@@ -107,3 +107,42 @@ export const getProductsCursorPagination = async (
         console.log(error);
     }
 };
+
+export const gerProductsOffsetpagination = async (req: Request, res: Response) => {
+    try {
+        const {page = 1, limit = 20, category = null} = req.query;
+    
+        const conditions = [];
+    
+        if(category){
+            conditions.push(eq(productTable.category, category))
+        }
+    
+        const offset = (Number(page)-1) * Number(limit)
+    
+        const products = await db
+                .select()
+                .from(productTable)
+                .where(conditions.length ? and(...conditions) : undefined)
+                .orderBy(
+                    desc(productTable.createdAt),
+                    desc(productTable.id)
+                )
+                .limit(Number(limit))
+                .offset(offset)
+    
+        return res.json({
+            statusCode: 201,
+            data: {products},
+            success: true,
+            previousPage: Number(page)-1 === 0 ? null : Number(page)-1,
+            nextPage: Number(page) + 1,
+        })
+    
+    } catch (error) {
+        if(error instanceof Error){
+            throw new Error(error.message)
+        }
+        console.log(error)
+    }
+}
