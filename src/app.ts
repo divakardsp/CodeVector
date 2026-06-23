@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use("/health", (req: Request, res: Response) => {
+app.use("/", (req: Request, res: Response) => {
     res.json({healthy: true});
 })
 
