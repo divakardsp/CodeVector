@@ -34,8 +34,8 @@ export const productTable = pgTable(
             .notNull(),
     },
     (table) => ({
-        updatedIdIdx: index("idx_products_updated_id").on(
-            table.updatedAt,
+        createdIdIdx: index("idx_products_created_id").on(
+            table.createdAt,
             table.id,
         ),
     }),
