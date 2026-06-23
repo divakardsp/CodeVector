@@ -51,6 +51,38 @@ export const updateProductPrice = async (req: Request, res: Response) => {
     }
 };
 
+export const addNewProduct = async (req: Request, res: Response) => {
+    try {
+        const {name, price, category} = req.body
+        if(!name || !price || !category){
+            return res.json({
+                statusCode: 404,
+                message: "Some fields are missing",
+                success: false
+            })
+        }
+
+        const newProduct = await db
+                    .insert(productTable)
+                    .values({
+                        name,price,category
+                    })
+                    .returning()
+        
+        return res.json({
+            statusCode: 201,
+            data: {product: newProduct},
+            message: "Product Created",
+            success: true
+        })
+    } catch (error) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        }
+        console.log(error);
+    }
+}
+
 export const getProductsCursorPagination = async (
     req: Request,
     res: Response,
